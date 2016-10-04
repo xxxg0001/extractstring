@@ -26,10 +26,10 @@ func proccessComment(close string, context []byte, nIndex, nSize int) int {
 	return i
 }
 
-func proccessString(close string, context []byte, nIndex, nSize int) (int, int, int) {
+func proccessString(close string, isEscape bool, context []byte, nIndex, nSize int) (int, int, int) {
 	i := nIndex
 	for ; i < nSize; i++ {
-		if context[i] == 0x5c {
+		if isEscape == true && context[i] == 0x5c {
 			i++
 			continue
 		}
@@ -66,11 +66,22 @@ func (p *File) GetStrings(context []byte, filter Filter) ([][]byte, []int, []int
 			continue
 		}
 		switch keyword.SyntaxType {
-		case "comment":
+		case "Comment":
 			i = proccessComment(keyword.Close, context, i, nSize)
-		case "string":
+		case "String":
 			start, end := -1, -1
-			i, start, end = proccessString(keyword.Close, context, i, nSize)
+			i, start, end = proccessString(keyword.Close, true, context, i, nSize)
+			if start != -1 && end != -1 {
+				result := context[start:end]
+				if filter == nil || filter(result) {
+					entryStart = append(entryStart, start)
+					entryEnd = append(entryEnd, end)
+					entryBytes = append(entryBytes, result)
+				}
+			}
+		case "NoEscapeString":
+			start, end := -1, -1
+			i, start, end = proccessString(keyword.Close, false, context, i, nSize)
 			if start != -1 && end != -1 {
 				result := context[start:end]
 				if filter == nil || filter(result) {

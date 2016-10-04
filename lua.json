@@ -2,26 +2,26 @@
 	{
 		"Open":"'",
 		"Close":"'",
-		"SyntaxType":"string"
+		"SyntaxType":"String"
 	},
 	{
 		"Open":"\"",
 		"Close":"\"",
-		"SyntaxType":"string"
+		"SyntaxType":"String"
 	},
 	{
 		"Open":"[[",
 		"Close":"]]",
-		"SyntaxType":"string"
+		"SyntaxType":"NoEscapeString"
 	},
 	{
 		"Open":"--",
 		"Close":"\n",
-		"SyntaxType":"comment"
+		"SyntaxType":"Comment"
 	},
 	{
 		"Open":"--[[",
 		"Close":"]]",
-		"SyntaxType":"comment"
+		"SyntaxType":"Comment"
 	}
 ]
